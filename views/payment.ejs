@@ -1,0 +1,64 @@
+<!-- views/payment.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PayHere: Mock Payment</title>
+  </head>
+  <body>
+    <h1>Order: <%= order.order_id %></h1>
+    <form action="/pay/payment" method="post">
+      <input type="hidden" name="order_id" value="<%= order.order_id %>" />
+      <input type="hidden" name="payhere_amount" value="<%= order.amount %>" />
+      <input
+        type="hidden"
+        name="payhere_currency"
+        value="<%= order.currency %>"
+      />
+      <!-- VISA, MASTER, AMEX, EZCASH, MCASH, GENIE, VISHWA, PAYAPP, HNB, FRIMI -->
+      <input type="hidden" name="method" value="VISA" />
+      <input
+        type="hidden"
+        name="card_holder_name"
+        value="<%= order.first_name %> <%= order.last_name %>"
+      />
+      <span>amount <%= order.amount %> <%= order.currency %></span>
+      <br />
+      <label for="card_no">Card No</label>
+      <input id="card_no" name="card_no" value="4000000000000001" />
+      <br />
+      <label for="card_expiry">Card Exp</label>
+      <input id="card_expiry" name="card_expiry" value="0128" />
+      <br />
+      <label for="card_secret">Card Secret</label>
+      <input id="card_secret" name="card_secret" value="001" />
+      <br />
+      <br />
+      <span>Predefined cards:</span>
+      <% for(var i=0; i < cards.length; i++) { %>
+      <button
+        type="button"
+        data-card-no="<%= cards[i].no %>"
+        data-card-expiry="<%= cards[i].expiry %>"
+        data-card-secret="<%= cards[i].secret %>"
+        onclick="updateCardDetail(this)"
+      ><%= cards[i].status %></button>
+      <% } %>
+      <br />
+      <br />
+      <input type="submit" value="pay" name="action" />
+      <input type="submit" value="cancel" name="action" />
+    </form>
+    <script>
+      function updateCardDetail(ele) {
+        document.getElementById('card_no').value =
+          ele.getAttribute('data-card-no');
+        document.getElementById('card_expiry').value =
+          ele.getAttribute('data-card-expiry');
+        document.getElementById('card_secret').value =
+          ele.getAttribute('data-card-secret');
+      }
+    </script>
+  </body>
+</html>
